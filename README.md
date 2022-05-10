@@ -1,3 +1,9 @@
+# JavaFX17 Book Exercises & Code Snippets
+
+This repo is about practicing the JavaFX17 using the book Learn JavaFX17 as a guide and implementing the code. Each chapter code will be divided into its own branches and any significant apps will have their own branches as well.
+
+Please switch branches to view more examples of JavaFX17
+
 ## Getting Started
 
 Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
