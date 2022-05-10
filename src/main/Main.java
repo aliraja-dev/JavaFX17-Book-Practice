@@ -2,8 +2,11 @@ package main;
 
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
+import javafx.collections.ObservableList;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.shape.Circle;
 
@@ -14,19 +17,28 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // Example 2-21
-        Circle circle = new Circle();
-        Group root = new Group(circle);
-        Scene scene = new Scene(root, 300, 300);
+        ObservableList<Screen> screenList = Screen.getScreens();
+        System.out.println("screens: " + screenList.size());
 
-        // bind the Circle properties to window sizes
-        circle.centerXProperty().bind(scene.widthProperty().divide(2));
-        circle.centerYProperty().bind(scene.heightProperty().divide(2));
-        circle.radiusProperty().bind(Bindings.min(scene.widthProperty(), scene.heightProperty()).divide(2));
+        // Print to console details of screens attached to the system
+        for (Screen screen : screenList) {
+            print(screen);
+        }
+        System.exit(0);
+    }
 
-        // set scene to stage and show scene
-        primaryStage.setTitle("Property Binding JavaFx");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+    public void print(Screen s) {
+        System.out.println("DPI: " + s.getDpi());
+        Rectangle2D bounds = s.getBounds();
+        print(bounds);
+        System.out.println("Screen Visual Bounds:");
+        Rectangle2D visualBounds = s.getVisualBounds();
+        print(visualBounds);
+        System.out.println("-----------------------------------------------------");
+    }
+
+    public void print(Rectangle2D r) {
+        System.out.println("minX: " + r.getMinX() + " minY: " + r.getMinY() + " Width: " + r.getWidth() + " Height: "
+                + r.getHeight());
     }
 }
