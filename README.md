@@ -12,3 +12,11 @@ Details of Screens printed to Console
 
 Screen Class provides multiple Screen Details
 ![homepage](images/ss-screen-details1.png)
+
+#### Listing 4-7, Adding Popups / Modals to Application
+
+Using new Stage class we can add popups and modals to the primary stage.
+![homepage](images/ss-primaryStage.png)
+
+With Modal
+![homepage](images/ss-popup.png)
