@@ -5,6 +5,6 @@ This repo is structured to show code examples for chap02. Every example will hav
 Practice Code Examples wrt every commit.
 Chap09: Event Handling
 
-#### Listing 6-7, tooltip using Un-managed Nodes for Micro Text Help
+#### Listing 9-1, Registering an event handler
 
-![homepage](images/ss-helptext1.png)
+![homepage](images/ss-eventhandler-reg.png)
