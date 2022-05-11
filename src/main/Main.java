@@ -1,129 +1,98 @@
+// MicroHelpApp.java
 package main;
 
 import javafx.application.Application;
-import javafx.beans.binding.Bindings;
-import javafx.collections.ObservableList;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
+import javafx.application.Platform;
+import javafx.beans.value.ObservableValue;
+import javafx.geometry.VPos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.stage.Screen;
-import javafx.stage.Stage;
-import javafx.stage.Window;
-import javafx.scene.shape.Circle;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
-import javafx.stage.Modality;
-import static javafx.stage.Modality.NONE;
-import static javafx.stage.Modality.WINDOW_MODAL;
-import static javafx.stage.Modality.APPLICATION_MODAL;
-
-//! Listing 4-7
-//* To Show Popups / Dialogs using new Stage class and Modality Enums. 
+import javafx.stage.Stage;
 
 public class Main extends Application {
+    // An instance variable to store the Text node reference
+    private Text helpText = new Text();
 
     public static void main(String[] args) {
         Application.launch(args);
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
-        // TODO Auto-generated method stub
-        /* Buttons to display each kind of modal stage */
-        Button ownedNoneButton = new Button("Owned None");
-        ownedNoneButton.setOnAction(e -> showDialog(stage, NONE));
+    public void start(Stage stage) {
+        TextField fName = new TextField();
+        TextField lName = new TextField();
+        TextField salary = new TextField();
 
-        Button nonOwnedNoneButton = new Button("Non-owned None");
-        nonOwnedNoneButton.setOnAction(e -> showDialog(null, NONE));
+        Button closeBtn = new Button("Close");
+        closeBtn.setOnAction(e -> Platform.exit());
 
-        Button ownedWinButton = new Button("Owned Window Modal");
-        ownedWinButton.setOnAction(e -> showDialog(stage, WINDOW_MODAL));
+        fName.getProperties().put("microHelpText", "Enter the first name");
+        lName.getProperties().put("microHelpText", "Enter the last name");
+        salary.getProperties().put("microHelpText",
+                "Enter a salary greater than $2000.00.");
 
-        Button nonOwnedWinButton = new Button("Non-owned Window Modal");
-        nonOwnedWinButton.setOnAction(e -> showDialog(null, WINDOW_MODAL));
+        // The help text node is unmanaged
+        helpText.setManaged(false);
+        helpText.setTextOrigin(VPos.TOP);
+        helpText.setFill(Color.RED);
+        helpText.setFont(Font.font(null, 9));
+        helpText.setMouseTransparent(true);
 
-        Button ownedAppButton = new Button("Owned Application Modal");
-        ownedAppButton.setOnAction(e -> showDialog(stage, APPLICATION_MODAL));
+        // Add all nodes to a GridPane
+        GridPane root = new GridPane();
 
-        Button nonOwnedAppButton = new Button("Non-owned Application Modal");
-        nonOwnedAppButton.setOnAction(e -> showDialog(null, APPLICATION_MODAL));
+        root.add(new Label("First Name:"), 1, 1);
+        root.add(fName, 2, 1);
+        root.add(new Label("Last Name:"), 1, 2);
+        root.add(lName, 2, 2);
 
-        VBox root = new VBox();
-        root.getChildren().addAll(ownedNoneButton, nonOwnedNoneButton,
-                ownedWinButton, nonOwnedWinButton,
-                ownedAppButton, nonOwnedAppButton);
-        Scene scene = new Scene(root, 300, 200);
+        root.add(new Label("Salary:"), 1, 3);
+        root.add(salary, 2, 3);
+        root.add(closeBtn, 3, 3);
+        root.add(helpText, 4, 3);
+
+        Scene scene = new Scene(root, 300, 100);
+
+        // Add a change listener to the scene, so we know when
+        // the focus owner changes and display the micro help
+        scene.focusOwnerProperty().addListener(
+                (ObservableValue<? extends Node> value, Node oldNode, Node newNode) -> focusChanged(value, oldNode,
+                        newNode));
         stage.setScene(scene);
-        stage.setTitle("The Primary Stage");
+        stage.setTitle("Showing Micro Help");
         stage.show();
     }
 
-    private void showDialog(Window owner, Modality modality) {
-        // Create a Stage with specified owner and modality
-        Stage stage = new Stage();
-        stage.initOwner(owner);
-        stage.initModality(modality);
+    public void focusChanged(ObservableValue<? extends Node> value,
+            Node oldNode, Node newNode) {
+        // Focus has changed to a new node
+        String microHelpText = (String) newNode.getProperties().get("microHelpText");
 
-        Label modalityLabel = new Label(modality.toString());
-        Button closeButton = new Button("Close");
-        closeButton.setOnAction(e -> stage.close());
+        if (microHelpText != null && microHelpText.trim().length() > 0) {
+            helpText.setText(microHelpText);
+            helpText.setVisible(true);
 
-        VBox root = new VBox();
-        root.getChildren().addAll(modalityLabel, closeButton);
-        Scene scene = new Scene(root, 200, 100);
-        stage.setScene(scene);
-        stage.setTitle("A Dialog Box");
-        stage.show();
+            // Position the help text node
+            double x = newNode.getLayoutX() +
+                    newNode.getLayoutBounds().getMinX() -
+                    helpText.getLayoutBounds().getMinX();
+            double y = newNode.getLayoutY() +
+                    newNode.getLayoutBounds().getMinY() +
+                    newNode.getLayoutBounds().getHeight() -
+                    helpText.getLayoutBounds().getMinX();
+
+            helpText.setLayoutX(x);
+            helpText.setLayoutY(y);
+            helpText.setWrappingWidth(newNode.getLayoutBounds().getWidth());
+        } else {
+            helpText.setVisible(false);
+        }
     }
 }
-// //! Listing 4-4
-// public class Main extends Application {
-// public static void main(String[] args) {
-// Application.launch(args);
-// }
-
-// public void start(Stage primaryStage) {
-// primaryStage.setScene(new Scene(new Group(new Button("Hello World!")), 400,
-// 300));
-// primaryStage.setTitle("Empty Stage");
-// primaryStage.show();
-// primaryStage.centerOnScreen();
-// }
-// }
-// ! Listing 4-1
-// public class Main extends Application {
-// public static void main(String[] args) {
-// Application.launch(args);
-// }
-
-// @Override
-// public void start(Stage primaryStage) throws Exception {
-// ObservableList<Screen> screenList = Screen.getScreens();
-// System.out.println("screens: " + screenList.size());
-
-// // Print to console details of screens attached to the system
-// for (Screen screen : screenList) {
-// print(screen);
-// }
-// System.exit(0);
-// }
-
-// public void print(Screen s) {
-// System.out.println("DPI: " + s.getDpi());
-// Rectangle2D bounds = s.getBounds();
-// print(bounds);
-// System.out.println("Screen Visual Bounds:");
-// Rectangle2D visualBounds = s.getVisualBounds();
-// print(visualBounds);
-// System.out.println("-----------------------------------------------------");
-// }
-
-// public void print(Rectangle2D r) {
-// System.out.println("minX: " + r.getMinX() + " minY: " + r.getMinY() + "
-// Width: " + r.getWidth() + " Height: "
-// + r.getHeight());
-// }
-// }
