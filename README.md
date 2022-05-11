@@ -13,3 +13,10 @@ As shown below the tool tip text in red for hints doesn't shift the text fields 
 ![homepage](images/ss-helptext1.png)
 ![homepage](images/ss-helptext2.png)
 ![homepage](images/ss-helptext3.png)
+
+#### Listing 6-9, Moving Node between Cooridnate Bounds of Nodes
+
+Moving red circle between fields on focus
+
+![homepage](images/ss-movingmarkers1.png)
+![homepage](images/ss-movingmarkers2.png)
