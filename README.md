@@ -1,22 +1,8 @@
-# JavaFX17 Book - Chap04 Branch
+# JavaFX17 Book - Chap06 Branch - Nodes
 
 This repo is structured to show code examples for chap02. Every example will have its own commit and associated screenshot with same title as the commit message. To view code for a GUI SS, open respective commit.
 
 Practice Code Examples wrt every commit.
-Chap02: is about Property Bindings in JavaFX (Observable Pattern)
+Chap02: Nodes in JavaFX Graph Scene Data Structure
 
-#### Listing 4-1, Accessing Details of Screen
-
-Details of Screens printed to Console
-![homepage](images/ss-Screen-class.png)
-
-Screen Class provides multiple Screen Details
-![homepage](images/ss-screen-details1.png)
-
-#### Listing 4-7, Adding Popups / Modals to Application
-
-Using new Stage class we can add popups and modals to the primary stage.
-![homepage](images/ss-primaryStage.png)
-
-With Modal
-![homepage](images/ss-popup.png)
+#### Listing 6-7, tooltip using Un-managed Nodes for Micro Text Help
