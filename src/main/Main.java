@@ -15,9 +15,11 @@ public class Main extends Application {
         Application.launch(args);
     }
 
+    private Circle circle;
+
     @Override
     public void start(Stage stage) {
-        Circle circle = new Circle(100, 100, 50);
+        circle = new Circle(100, 100, 50);
         circle.setFill(Color.CORAL);
 
         // Create a MouseEvent filter
@@ -28,8 +30,12 @@ public class Main extends Application {
 
         // Register the MouseEvent filter and handler to the Circle
         // for mouse-clicked events
-        circle.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEventFilter);
-        circle.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEventHandler);
+        // circle.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEventFilter);
+        // circle.addEventHandler(MouseEvent.MOUSE_CLICKED, mouseEventHandler);
+
+        // Registering using the onXXX Methods
+
+        circle.setOnMouseClicked(mouseEventHandler);
 
         HBox root = new HBox();
         root.getChildren().add(circle);
@@ -38,5 +44,10 @@ public class Main extends Application {
         stage.setTitle("Registering Event Filters and Handlers");
         stage.show();
         stage.sizeToScene();
+    }
+
+    public void stop() {
+        circle.setOnMouseClicked(null);
+        System.out.println("Application is stopping." + circle.toString());
     }
 }
